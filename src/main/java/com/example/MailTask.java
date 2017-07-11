@@ -38,7 +38,7 @@ public class MailTask extends TimerTask {
 
             //Send email and update the db
             // EMAIL CODE HERE
-            Composer composer = new Composer(Email,mailSender);
+            Composer composer = new Composer(Email,FirstName,mailSender);
             MimeMailMessage m = composer.getMailMessage();
 
             mailSender.send(m.getMimeMessage());

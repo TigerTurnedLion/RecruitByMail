@@ -36,7 +36,7 @@ public final class Conductor {
 
         try {
             // Initialize the connection to Gmail
-            setGmailSender(initGmail("EMAIL", "PASSWORD"));
+            setGmailSender(initGmail("jkelly.admin@gmail.com", "Manstein#3"));
             this.mailTime = new Timer("TimesUp");
             this.BusinessDaySet = BusinessDayHydrate();
             this.DBConnect = new DBConnector(initConnection());
@@ -136,12 +136,12 @@ public final class Conductor {
 
     public void ProcessEmails() {
 
-        if (this.DBConnect.GotMail()) {
+        if (DBConnect.GotMail()) {
 
             //boot strap section - starts off i.e. initiates the process to send emails on business day intervals
 
             // Get the next business day
-            DateTime nextBusiDay = getNextBusinessDay(now(), this.BusinessDaySet);
+            DateTime nextBusiDay = getNextBusinessDay(now(), BusinessDaySet);
 
             TimerTask mainTask = new TimerTask() {
                 Random random = new Random();
@@ -179,13 +179,12 @@ public final class Conductor {
                             // to inject into the mailTime schedule
                             // limit for Random nextInt = 10800000
 
-                            //mailTime.schedule(mailTask,new Date(now().plusSeconds(random.nextInt(10800)).getMillis()));
-                            mailTime.schedule(mailTask, new Date(now().plusSeconds(random.nextInt(60)).getMillis()));
+                            mailTime.schedule(mailTask,new Date(now().plusSeconds(random.nextInt(7200)).getMillis()));
 
                         }
 
                         // Recursive call to process more emails if they exist on the next business day.
-                        ProcessEmails();
+                        //ProcessEmails();
 
                     } catch (Exception e) {
                         mailTime.cancel();
@@ -196,7 +195,8 @@ public final class Conductor {
 
             //this.mailTime.schedule(mainTask, new Date(nextBusiDay.getMillis()));
             //Here is a piece of test code bro... fame for 15 seconds.
-            this.mailTime.schedule(mainTask, new Date(now().plusSeconds(120).getMillis()));
+            //mailTime.schedule(mainTask, new Date(now().plusSeconds(120).getMillis()));
+            mailTime.schedule(mainTask, new Date(now().getMillis()));
         } else {
             this.mailTime.cancel();
         }
@@ -209,8 +209,8 @@ public final class Conductor {
                     DBConnect,
                     (JavaMailSenderImpl) GmailSender,
                     1,
-                    "",
-                    ""
+                    "jkelly.admin@gmail.com",
+                    "John"
             );
 
             mailTask.run();
@@ -220,77 +220,4 @@ public final class Conductor {
             System.err.println(e.getMessage());
         }
     }
-
-        /*
-
-        //Compose email
-        Composer composer = new Composer(address);
-        SimpleMailMessage m = composer.getMailMessage();
-
-
-        // Will use DI here.  The Conductor should read configuration details on how to connect to the SMTP server and
-        // instantiate a concrete email sender i.e. JavaMailSenderImpl obj with those details.  Then inject the obj to
-        // the Courier object.
-
-        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost("smtp.gmail.com");
-        sender.setPort(587);
-        sender.setUsername("jkelly.admin");
-        sender.setPassword("Manstein#3");
-
-        Properties props = new Properties();
-        props.setProperty("mail.smtp.starttls.enable", "true");
-        props.setProperty("mail.smtp.auth", "true");
-
-        sender.setJavaMailProperties(props);
-
-        //Send email 
-        Courier courier = new Courier(m, sender);
-
-        //catch the errors
-        try {
-            courier.send();
-
-            //update email as processed.
-            //CODE!
-        } catch (Exception e) {
-
-            System.err.println(e.getMessage());
-        }
-
-        */
-        /*
-    }
-
-    public static long GenRandom(Long min, Long max){
-
-        Random ran = new Random();
-        long l = ran.nextLong(max) + min;
-
-
-
-        return l;
-    }*/
-
-/*    public static void RandomDates(){
-
-        Random random = new Random();
-
-        DateTime startTime = new DateTime(random.nextLong());
-
-        System.out.println(startTime);
-
-        startTime = new DateTime(random.nextLong()).withMillisOfSecond(111);
-
-        System.out.println(startTime);
-
-
-    }
-
-    public static void RandomInts(int n){
-        Random ran = new Random();
-
-        int RandomInt = ran.nextInt(n);
-        System.out.println(RandomInt);
-    }*/
 }

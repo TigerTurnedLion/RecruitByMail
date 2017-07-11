@@ -33,7 +33,7 @@ public class DBConnector {
         String query;
 
         try{
-            query = "SELECT TOP 100 ID, EMAIL, FIRSTNAME FROM RECRUITEMAILS WHERE SENT = FALSE ORDER BY ID;";
+            query = "SELECT TOP 300 ID, EMAIL, FIRSTNAME FROM RECRUITEMAILS WHERE SENT = FALSE ORDER BY ID;";
 
             stmt = conn.createStatement();
 

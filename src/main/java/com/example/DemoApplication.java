@@ -10,31 +10,8 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 
 		Conductor conductor = Conductor.getInstance();
-		//conductor.ProcessEmails();
-		conductor.ProcessEmails_Test();
-
-		/*
-		conductor.RandomDates();
-
-		conductor.RandomInts(5);
-		conductor.RandomInts(5);
-		conductor.RandomInts(5);
-		conductor.RandomInts(5);
-		conductor.RandomInts(5);
-
-		conductor.RandomInts(500);
-		conductor.RandomInts(500);
-		conductor.RandomInts(500);
-		conductor.RandomInts(500);
-		conductor.RandomInts(500);
-
-		conductor.RandomInts(50000);
-		conductor.RandomInts(50000);
-		conductor.RandomInts(50000);
-		conductor.RandomInts(50000);
-		conductor.RandomInts(50000);
-		*/
-
+		conductor.ProcessEmails();
+		//conductor.ProcessEmails_Test();
 
 	}
 }
